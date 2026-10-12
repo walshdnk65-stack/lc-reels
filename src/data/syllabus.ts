@@ -42,6 +42,10 @@ const maths: SubjectSyllabus = {
         ['quad', 'Solve quadratic equations by factorising and by formula'],
         ['simul', 'Solve simultaneous equations, including one linear and one non-linear', 'HL'],
       ]],
+      ['expressions', 'Expressions & factorising', 'both', [
+        ['factorise', 'Expand and factorise expressions'],
+        ['fractions', 'Simplify algebraic fractions and rearrange formulae'],
+      ]],
       ['cubics', 'Cubics & the factor theorem', 'HL', [
         ['factor', 'Use the factor theorem to find roots of a cubic'],
       ]],
@@ -67,6 +71,14 @@ const maths: SubjectSyllabus = {
       ['financial', 'Financial maths', 'both', [
         ['compound', 'Calculate compound interest and depreciation (reducing balance)'],
         ['amort', 'Use present value and the amortisation formula', 'HL'],
+      ]],
+      ['arith', 'Arithmetic', 'both', [
+        ['percent', 'Percentages, percentage error, VAT and income tax'],
+        ['sci', 'Scientific notation and rounding'],
+      ]],
+      ['measure', 'Length, area & volume', 'both', [
+        ['volume', 'Volume and surface area of prisms, cylinders, cones and spheres'],
+        ['trap', 'Estimate area with the trapezoidal rule'],
       ]],
       ['induction', 'Proof by induction', 'HL', [
         ['series', 'Prove series and divisibility results by induction'],
@@ -101,6 +113,7 @@ const maths: SubjectSyllabus = {
       ['data', 'Data & summary statistics', 'both', [
         ['measures', 'Calculate and interpret mean, median, IQR and standard deviation'],
         ['correlation', 'Interpret scatter plots and the correlation coefficient'],
+        ['sampling', 'Types of data, sampling and bias'],
       ]],
       ['inference', 'Inference', 'HL', [
         ['normal', 'Use the normal distribution and z-scores'],
@@ -114,6 +127,9 @@ const maths: SubjectSyllabus = {
       ]],
       ['circle', 'Coordinate geometry — the circle', 'both', [
         ['eqn', 'Find the centre and radius from the equation of a circle'],
+      ]],
+      ['synthetic', 'Synthetic geometry', 'both', [
+        ['theorems', 'Apply the geometry theorems and constructions'],
       ]],
       ['trig', 'Trigonometry', 'both', [
         ['rules', 'Use the sine rule, cosine rule and area formula'],
@@ -133,6 +149,10 @@ const chemistry: SubjectSyllabus = {
   reviewNote: 'Strand and section numbers taken from the 2025 specification layout; learning outcomes still to be checked one by one.',
   topics: [
     topic('chemistry', 's1', 'Strand 1 — Nature of Matter', 'both', [
+      ['matter', '1.1 Matter', 'both', [
+        ['kinetic', 'Use the kinetic theory to explain states of matter and changes of state'],
+        ['mixtures', 'Distinguish elements, compounds and mixtures and how mixtures are separated'],
+      ]],
       ['atomic', '1.2 Atomic structure', 'both', [
         ['particles', 'Describe protons, neutrons and electrons and the nuclear model'],
         ['config', 'Write electron configurations (s, p, d sublevels)'],
@@ -140,6 +160,7 @@ const chemistry: SubjectSyllabus = {
       ]],
       ['periodic', '1.3 The periodic table', 'both', [
         ['trends', 'Explain trends in atomic radius, ionisation energy and electronegativity'],
+        ['groups', 'Describe the properties and reactions of Groups 1, 2, 17 and 18'],
       ]],
       ['mole', '1.4 Quantifying matter', 'both', [
         ['mass', 'Convert between mass, moles and number of particles'],
@@ -161,6 +182,7 @@ const chemistry: SubjectSyllabus = {
       ]],
       ['hydrocarbons', '2.4 Hydrocarbons', 'both', [
         ['families', 'Name and draw alkanes, alkenes and alkynes'],
+        ['uses', 'Describe sources, combustion and uses of hydrocarbons'],
       ]],
     ]),
     topic('chemistry', 's3', 'Strand 3 — Interactions of Matter', 'both', [
@@ -178,9 +200,11 @@ const chemistry: SubjectSyllabus = {
       ['acids', '3.4 Acid–base systems', 'both', [
         ['theories', 'Use Arrhenius and Brønsted–Lowry definitions; conjugate pairs'],
         ['ph', 'Calculate pH of strong acids and bases'],
+        ['strength', 'Distinguish strong and weak acids and choose indicators'],
       ]],
       ['redox', '3.5 Electrochemistry', 'both', [
         ['oxnum', 'Assign oxidation numbers and identify oxidation and reduction'],
+        ['cells', 'Explain galvanic cells, electrolysis and corrosion'],
       ]],
     ]),
     topic('chemistry', 's4', 'Strand 4 — Matter in our World', 'both', [
@@ -191,6 +215,7 @@ const chemistry: SubjectSyllabus = {
       ['organic', '4.2 Reactivity of organic compounds', 'both', [
         ['functional', 'Identify functional groups'],
         ['reactions', 'Classify organic reactions (addition, substitution, elimination, redox)'],
+        ['polymers', 'Describe polymers, plastics and pharmaceuticals'],
       ]],
       ['environment', '4.3 Our chemical environment', 'both', [
         ['greenhouse', 'Explain the enhanced greenhouse effect'],
@@ -200,6 +225,9 @@ const chemistry: SubjectSyllabus = {
     topic('chemistry', 'u', 'Unifying Strand — Nature of Science', 'both', [
       ['investigating', 'Investigating in chemistry', 'both', [
         ['variables', 'Identify variables, controls and sources of error'],
+      ]],
+      ['society', 'Chemistry in society', 'both', [
+        ['green', 'Discuss green chemistry, sustainability and safety'],
       ]],
     ]),
   ]
@@ -223,12 +251,15 @@ const business: SubjectSyllabus = {
       ]],
       ['economy', '1.3 Business and the economy', 'both', [
         ['indicators', 'Explain how inflation, interest rates and exchange rates affect business'],
+        ['sectors', 'Describe the sectors of the economy and the role of government'],
       ]],
       ['policy', '1.4 National and EU policy', 'both', [
         ['eu', 'Distinguish EU regulations from directives'],
+        ['institutions', 'Describe the main EU institutions and lobbying'],
       ]],
       ['global', '1.5 Irish business globally', 'both', [
         ['fdi', 'Explain globalisation and foreign direct investment'],
+        ['trade', 'Explain international trade, trading blocs and the single market'],
       ]],
     ]),
     topic('business', 's2', 'Strand 2 — Understanding Enterprise', 'both', [
@@ -249,6 +280,7 @@ const business: SubjectSyllabus = {
       ['finance', '2.5 Operations and finance', 'both', [
         ['sources', 'Match sources of finance to their purpose and term'],
         ['cashflow', 'Interpret a cash flow forecast'],
+        ['operations', 'Describe production methods, quality and supply chains'],
       ]],
       ['growth', '2.6 Growth & expansion', 'both', [
         ['porter', 'Apply Porter’s Five Forces'],
@@ -265,17 +297,20 @@ const business: SubjectSyllabus = {
       ]],
       ['people', '3.2 Leading & managing people', 'both', [
         ['motivation', 'Apply motivation theories (e.g. Maslow)'],
+        ['hr', 'Describe recruitment, selection, training and appraisal'],
       ]],
       ['communication', '3.3 Communication', 'both', [
         ['channels', 'Choose appropriate communication methods'],
       ]],
       ['change', '3.4 Planning & change', 'both', [
         ['forcefield', 'Use force field analysis to plan change'],
+        ['planning', 'Distinguish strategic, tactical and contingency planning'],
       ]],
     ]),
     topic('business', 's4', 'Strand 4 — Being Informed and Making Informed Decisions', 'both', [
       ['consumer', '4.1 Informed consumer decisions', 'both', [
         ['rights', 'Explain consumer rights and how to resolve complaints'],
+        ['ethical', 'Make ethical, sustainable and digital consumer decisions'],
       ]],
       ['financial', '4.2 Informed financial decisions', 'both', [
         ['apr', 'Compare financial products using APR and AER'],
@@ -283,6 +318,7 @@ const business: SubjectSyllabus = {
       ]],
       ['employee', '4.3 Being an informed employee', 'both', [
         ['rights', 'Describe employment rights and the role of trade unions'],
+        ['payslip', 'Read a payslip: gross pay, deductions and net pay'],
       ]],
     ]),
     topic('business', 'u', 'Unifying Strand — Investigating Business', 'both', [
@@ -305,6 +341,7 @@ const accounting: SubjectSyllabus = {
       ['soletrader', 'Sole trader final accounts', 'both', [
         ['trading', 'Prepare a trading account and calculate cost of sales'],
         ['adjust', 'Apply adjustments: accruals, prepayments, bad debts, closing stock'],
+        ['layout', 'Present final accounts and a balance sheet in the correct format'],
       ]],
       ['company', 'Company final accounts', 'HL', [
         ['appropriation', 'Prepare an appropriation account (tax, dividends, reserves)'],
@@ -312,6 +349,9 @@ const accounting: SubjectSyllabus = {
       ]],
       ['manufacturing', 'Manufacturing accounts', 'both', [
         ['prime', 'Calculate prime cost and cost of manufacture'],
+      ]],
+      ['service', 'Service firm accounts', 'both', [
+        ['accounts', 'Prepare accounts for a service firm'],
       ]],
       ['club', 'Club accounts', 'both', [
         ['iande', 'Prepare an income and expenditure account and accumulated fund'],
@@ -322,6 +362,7 @@ const accounting: SubjectSyllabus = {
       ['depreciation', 'Depreciation', 'both', [
         ['methods', 'Calculate straight-line and reducing-balance depreciation'],
         ['disposal', 'Record disposal of fixed assets'],
+        ['revaluation', 'Record revaluation of fixed assets', 'HL'],
       ]],
       ['theory', 'Accounting theory', 'both', [
         ['concepts', 'Explain accounting concepts and capital vs revenue expenditure'],
@@ -346,12 +387,14 @@ const accounting: SubjectSyllabus = {
         ['profitability', 'Calculate and interpret profitability ratios'],
         ['activity', 'Calculate debtor and creditor periods and stock turnover'],
         ['gearing', 'Calculate and interpret gearing', 'HL'],
+        ['commentary', 'Interpret ratios and write a commentary for a user of the accounts'],
       ]],
     ]),
     topic('accounting', 'mgmt', 'Management accounting', 'both', [
       ['costing', 'Cost accounting', 'both', [
         ['marginal', 'Use contribution and break-even analysis'],
         ['overheads', 'Apportion and absorb overheads'],
+        ['product', 'Classify costs and calculate product and job costs'],
       ]],
       ['budgeting', 'Budgeting', 'both', [
         ['cash', 'Prepare a cash budget'],
@@ -376,6 +419,7 @@ const english: SubjectSyllabus = {
       ['comprehension', 'Comprehending — Question A', 'both', [
         ['style', 'Analyse how language and style create effects'],
         ['genres', 'Recognise the five language genres'],
+        ['persuasion', 'Identify persuasive and rhetorical techniques'],
       ]],
       ['qb', 'Comprehending — Question B (functional writing)', 'both', [
         ['register', 'Write in the right register and format for a task'],
@@ -390,6 +434,9 @@ const english: SubjectSyllabus = {
       ['texts', 'Prescribed single texts', 'both', [
         ['list', 'Know which texts may be studied on their own at each level'],
         ['othello', 'Analyse character, theme and key moments in Othello'],
+        ['gatsby', 'Analyse character, theme and key moments in The Great Gatsby'],
+        ['dracula', 'Analyse character, theme and key moments in Dracula'],
+        ['hamnet', 'Analyse character, theme and key moments in Hamnet'],
       ]],
     ], { paper: 'Paper 2', verification: 'verified' }),
     topic('english', 'comparative', 'Comparative study (2027)', 'both', [
@@ -397,6 +444,7 @@ const english: SubjectSyllabus = {
         ['hl', 'Know and use the 2027 HL modes: Theme or issue, Cultural Context, General Vision and Viewpoint', 'HL'],
         ['ol', 'Know and use the 2027 OL modes: Theme, Social Setting, Relationships', 'OL'],
         ['linking', 'Compare texts using linking language'],
+        ['understand', 'Understand what each comparative mode asks you to examine'],
       ]],
       ['texts', 'Comparative texts', 'both', [
         ['list', 'Know the prescribed comparative texts and how they may be chosen'],
@@ -442,9 +490,18 @@ const irish: SubjectSyllabus = {
       ]],
       ['ginideach', 'An tuiseal ginideach', 'both', [
         ['alt', 'An t-alt sa tuiseal ginideach'],
+        ['ainmbhriathar', 'An ginideach i ndiaidh ainm briathartha (ag imirt peile)'],
       ]],
       ['uimhreacha', 'Uimhreacha', 'both', [
         ['pearsanta', 'Uimhreacha pearsanta (duine, beirt, triúr…)'],
+        ['bunuimhreacha', 'Bunuimhreacha le hainmfhocail (dhá bhád, seacht mbád)'],
+      ]],
+      ['forainmneacha', 'Forainmneacha réamhfhoclacha', 'both', [
+        ['reimniu', 'agam, liom, orm, dom, uaim, fúm, ionam'],
+        ['mothuchain', 'Mothúcháin le “ar”: tá brón orm'],
+      ]],
+      ['aidiacht', 'An aidiacht', 'both', [
+        ['comparaid', 'Céimeanna comparáide: níos mó, is fearr'],
       ]],
       ['seimhiu', 'Séimhiú agus urú', 'both', [
         ['rialacha', 'Na príomhrialacha: mo/do/a, ar an, sa, i'],
@@ -459,6 +516,8 @@ const irish: SubjectSyllabus = {
         ['teicneolaiocht', 'An teicneolaíocht agus na meáin shóisialta'],
         ['oige', 'An óige agus an tsláinte'],
         ['sochai', 'Fadhbanna sóisialta: dífhostaíocht, imirce, tithíocht'],
+        ['scoil', 'An scoil agus an córas oideachais'],
+        ['gaeilge', 'An Ghaeilge agus an Ghaeltacht'],
       ]],
     ]),
     topic('irish', 'beal', 'Béaltriail (40%)', 'both', [
@@ -513,6 +572,8 @@ const french: SubjectSyllabus = {
         ['pc', 'Le passé composé — avoir and être'],
         ['pqp', 'Le plus-que-parfait'],
         ['ps', 'Recognise the passé simple in literary texts', 'HL'],
+        ['imperatif', 'L’impératif'],
+        ['passif', 'Recognise and use the passive voice', 'HL'],
         ['imparfait', 'L’imparfait vs le passé composé'],
         ['futur', 'Le futur simple and le conditionnel'],
         ['subj', 'Le subjonctif after expressions of feeling and necessity', 'HL'],
@@ -520,6 +581,7 @@ const french: SubjectSyllabus = {
       ['pronouns', 'Les pronoms', 'both', [
         ['objet', 'Direct and indirect object pronouns, y and en'],
         ['relatifs', 'Relative pronouns qui, que, dont, où'],
+        ['toniques', 'Stressed pronouns (moi, toi…) and possessives'],
       ]],
       ['negatives', 'La négation', 'both', [
         ['ne', 'Use ne…pas, ne…jamais, ne…rien, ne…plus, ne…personne'],
@@ -528,6 +590,7 @@ const french: SubjectSyllabus = {
         ['adj', 'Adjective agreement and position'],
         ['gender', 'Noun gender'],
         ['places', 'Prepositions with countries and towns'],
+        ['comparatives', 'Comparatives and superlatives'],
       ]],
     ]),
     topic('french', 'vocab', 'Vocabulaire', 'both', [
@@ -537,6 +600,9 @@ const french: SubjectSyllabus = {
         ['ecole', 'L’école et l’avenir'],
         ['sante', 'La santé et le bien-être'],
         ['societe', 'Le travail et les problèmes sociaux'],
+        ['famille', 'La famille, les amis et la vie quotidienne'],
+        ['voyages', 'Les vacances, les voyages et la francophonie'],
+        ['media', 'Les médias, la culture et les loisirs'],
       ]],
       ['idioms', 'Expressions', 'both', [
         ['avoir', 'Common idioms with avoir and faire'],
