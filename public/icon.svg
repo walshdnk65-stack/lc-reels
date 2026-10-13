@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff4f9a"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#g)"/><path d="M32 14 L50 46 H14 Z" fill="#fff"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="LC Reels">
+  <!-- Same tile, navy, cream and gold as the Sixth Year tracker's logo -->
+  <rect width="200" height="200" rx="45" fill="#14213D"/>
+  <rect x="66" y="40" width="68" height="104" rx="14" fill="none" stroke="#F4F2ED" stroke-opacity=".2" stroke-width="12" transform="rotate(-8 100 92)"/>
+  <rect x="62" y="52" width="76" height="108" rx="15" fill="none" stroke="#F4F2ED" stroke-width="12"/>
+  <path d="M91 86v40l32-20Z" fill="#D9A441"/>
+</svg>

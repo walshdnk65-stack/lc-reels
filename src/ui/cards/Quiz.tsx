@@ -82,14 +82,14 @@ export function ClozeCard({ item, mem, onGrade }: CardProps<Cloze>) {
         ))}
       </div>
       {choices && !results && (
-        <div className="chips">
-          {choices.map((c) => <button key={c} className="chip" disabled={vals.includes(c)} onClick={() => fillNext(c)}>{c}</button>)}
+        <div className="choice-chips">
+          {choices.map((c) => <button key={c} className="choice" disabled={vals.includes(c)} onClick={() => fillNext(c)}>{c}</button>)}
         </div>
       )}
       {!results ? (
         <div className="row">
-          <button className="primary" disabled={vals.some((v) => !v.trim())} onClick={() => check()}>Check</button>
-          <button className="ghost" onClick={() => check(true)}>Show answer</button>
+          <button className="btn primary" disabled={vals.some((v) => !v.trim())} onClick={() => check()}>Check</button>
+          <button className="btn subtle" onClick={() => check(true)}>Show answer</button>
         </div>
       ) : (
         <div className="reveal">
@@ -127,8 +127,8 @@ export function TranslateCard({ item, mem, onGrade }: CardProps<Translate>) {
         onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && text.trim()) check(); }} />
       {!result && (
         <div className="row">
-          <button className="primary" disabled={!text.trim()} onClick={check}>Check</button>
-          <button className="ghost" onClick={giveUp}>I don’t know</button>
+          <button className="btn primary" disabled={!text.trim()} onClick={check}>Check</button>
+          <button className="btn subtle" onClick={giveUp}>I don’t know</button>
         </div>
       )}
       {result && (
@@ -183,8 +183,8 @@ export function BuilderCard({ item, mem, onGrade }: CardProps<Builder>) {
       )}
       {result === null ? (
         <div className="row">
-          <button className="primary" disabled={!picked.length} onClick={check}>Check</button>
-          {picked.length > 0 && <button className="ghost" onClick={() => setPicked([])}>Clear</button>}
+          <button className="btn primary" disabled={!picked.length} onClick={check}>Check</button>
+          {picked.length > 0 && <button className="btn subtle" onClick={() => setPicked([])}>Clear</button>}
         </div>
       ) : (
         <div className="reveal">

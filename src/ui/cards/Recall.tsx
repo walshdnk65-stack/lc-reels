@@ -78,7 +78,7 @@ export function TechniqueCard({ item, graded, onRead }: CardProps<Technique>) {
 function ReadButton({ graded, onRead }: { graded: boolean; onRead: () => void }) {
   return graded
     ? <div className="grade-done">Got it ✓</div>
-    : <button className="primary" onClick={onRead}>Got it</button>;
+    : <button className="btn primary" onClick={onRead}>Got it</button>;
 }
 
 export function ShortCard({ item, mem, graded, onGrade }: CardProps<ShortAnswer>) {
@@ -90,7 +90,7 @@ export function ShortCard({ item, mem, graded, onGrade }: CardProps<ShortAnswer>
       <Rich className="prompt" text={item.question} />
       <textarea className="answer-input" rows={4} placeholder="Type your answer, or answer in your head" value={text}
         disabled={shown} onChange={(e) => setText(e.target.value)} />
-      {!shown && <button className="primary" onClick={() => setShown(true)}>Show model answer</button>}
+      {!shown && <button className="btn primary" onClick={() => setShown(true)}>Show model answer</button>}
       {shown && (
         <div className="reveal">
           <div className="model"><span className="explain-title">Model answer</span><Rich text={item.model} /></div>
@@ -125,7 +125,7 @@ export function WorkedCard({ item, mem, graded, onGrade }: CardProps<Worked>) {
           </li>
         ))}
       </ol>
-      {!done && <button className="primary" onClick={() => setStep(step + 1)}>{step === 0 ? 'Show step 1' : `Next step (${step + 1}/${item.steps.length})`}</button>}
+      {!done && <button className="btn primary" onClick={() => setStep(step + 1)}>{step === 0 ? 'Show step 1' : `Next step (${step + 1}/${item.steps.length})`}</button>}
       {done && (
         <div className="reveal">
           <div className="final-answer"><span className="explain-title">Answer</span><Rich text={item.answer} /></div>
@@ -154,7 +154,7 @@ export function EssayCard({ item, mem, graded, onGrade }: CardProps<Essay>) {
           <ul>{s.items.map((t, j) => <li key={j}><Rich as="span" text={t} /></li>)}</ul>
         </div>
       ))}
-      {!done && <button className="primary" onClick={() => setStage(stage + 1)}>Reveal: {item.stages[stage].label}</button>}
+      {!done && <button className="btn primary" onClick={() => setStage(stage + 1)}>Reveal: {item.stages[stage].label}</button>}
       {done && <GradeBar graded={graded} onGrade={onGrade} prompt="How did your plan compare?" labels={['Way off', 'Some of it', 'Very close']} />}
     </div>
   );

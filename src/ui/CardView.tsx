@@ -3,6 +3,7 @@ import type { ContentItem, ContentType, Grade, Provenance } from '../types';
 import { lookupObjective } from '../data/syllabus';
 import { SOURCES } from '../data/sources';
 import { actions } from '../engine/store';
+import { Icon } from './Icon';
 import type { Reason } from '../engine/feed';
 import { BuilderCard, ClozeCard, MCQCard, TranslateCard } from './cards/Quiz';
 import { EssayCard, ExplainerCard, FlashcardCard, ShortCard, TechniqueCard, WorkedCard } from './cards/Recall';
@@ -60,54 +61,58 @@ export function CardView({ item, reason, mem, graded, bookmarked, flagged, onGra
   const read = () => { setLastXp(3); onRead(); };
 
   return (
-    <article className="card" style={{ ['--h' as string]: ref.subject.hue }}>
-      <header className="card-head">
-        <div className="crumb">
-          <span className="subj">{ref.subject.emoji} {ref.subject.name}</span>
-          <span className="topic">{ref.subtopic.title}</span>
+    <article className="feed-card" style={{ ['--c' as string]: ref.subject.color }}>
+      <header className="fc-head">
+        <div className="fc-titles">
+          <div className="fc-pills">
+            <span className="pill subj"><i className="dot" />{ref.subject.name}</span>
+            <span className="pill">{TYPE_LABEL[item.type]}</span>
+            {reason !== 'new' && <span className={'pill reason ' + reason}>{REASON_LABEL[reason]}</span>}
+            {item.level !== 'both' && <span className="pill">{item.level === 'HL' ? 'Higher' : 'Ordinary'}</span>}
+          </div>
+          <div className="fc-topic">{ref.subtopic.title}</div>
         </div>
-        <div className="badges">
-          <span className="badge type">{TYPE_LABEL[item.type]}</span>
-          {reason !== 'new' && <span className={'badge reason ' + reason}>{REASON_LABEL[reason]}</span>}
-          {item.level !== 'both' && <span className="badge lvl">{item.level === 'HL' ? 'Higher' : 'Ordinary'}</span>}
+        <div className="fc-actions">
+          <button className={'icon-btn' + (bookmarked ? ' on' : '')} onClick={() => actions.toggleBookmark(item.id)} aria-pressed={bookmarked} aria-label={bookmarked ? 'Remove from saved' : 'Save card'}>
+            <Icon name="star" className={bookmarked ? 'filled' : ''} />
+          </button>
+          <button className={'icon-btn' + (flagged ? ' on warn' : '')} onClick={() => setSheet('flag')} aria-label="Flag a problem">
+            <Icon name="flag" />
+          </button>
+          <button className="icon-btn" onClick={() => setSheet('info')} aria-label="Where this comes from">
+            <Icon name="info" />
+          </button>
         </div>
       </header>
 
       <div className="card-scroll">
         <Body item={item} mem={mem} graded={graded} onGrade={grade} onRead={read} />
-        <button className={'prov prov-' + item.provenance} onClick={() => setSheet('info')}>
-          {item.verification === 'verified' ? '✓ ' : ''}{PROVENANCE_LABEL[item.provenance]}
-          {item.verification === 'verified' && item.sourceNote ? ` · ${item.sourceNote.split(',')[0]}` : ''}
-          <span className="prov-more">ⓘ</span>
-        </button>
       </div>
 
-      <nav className="rail" aria-label="Card actions">
-        <button className={'rail-btn' + (bookmarked ? ' on' : '')} onClick={() => actions.toggleBookmark(item.id)} aria-pressed={bookmarked} aria-label="Save card">
-          <span aria-hidden>{bookmarked ? '★' : '☆'}</span><small>{bookmarked ? 'Saved' : 'Save'}</small>
+      <footer className="fc-foot">
+        <button className={'prov prov-' + item.provenance} onClick={() => setSheet('info')}>
+          {item.verification === 'verified' && <Icon name="check" className="ic-inline" />}
+          {PROVENANCE_LABEL[item.provenance]}
+          {item.verification === 'verified' && item.sourceNote ? ` · ${item.sourceNote.split(',')[0]}` : ''}
         </button>
-        <button className={'rail-btn' + (flagged ? ' on warn' : '')} onClick={() => setSheet('flag')} aria-label="Flag a problem">
-          <span aria-hidden>⚑</span><small>{flagged ? 'Flagged' : 'Flag'}</small>
-        </button>
-        <button className="rail-btn" onClick={() => setSheet('info')} aria-label="Where this comes from">
-          <span aria-hidden>ⓘ</span><small>Source</small>
-        </button>
-      </nav>
-
-      {graded && (
-        <button className="next-btn" onClick={onNext}>
-          {lastXp !== null && <span className="xp-pop">+{lastXp} XP</span>}
-          Next <span aria-hidden>↓</span>
-        </button>
-      )}
+        {graded && (
+          <button className="btn primary small next-btn" onClick={onNext}>
+            {lastXp !== null && <span className="xp-pop">+{lastXp} XP</span>}
+            Next <Icon name="down" className="ic-inline" />
+          </button>
+        )}
+      </footer>
 
       {sheet && (
-        <div className="sheet-backdrop" onClick={() => setSheet(null)}>
-          <div className="sheet" onClick={(e) => e.stopPropagation()} role="dialog" aria-label={sheet === 'info' ? 'About this card' : 'Flag this card'}>
-            {sheet === 'info' ? <InfoSheet item={item} /> : (
-              <FlagSheet flagged={flagged} onPick={(reason) => { if (reason) actions.flag(item.id, reason); else actions.unflag(item.id); setSheet(null); }} />
-            )}
-            <button className="ghost full" onClick={() => setSheet(null)}>Close</button>
+        <div className="modal-back" onClick={() => setSheet(null)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-label={sheet === 'info' ? 'About this card' : 'Flag this card'}>
+            <div className="grab" />
+            <div className="sheet-body">
+              {sheet === 'info' ? <InfoSheet item={item} /> : (
+                <FlagSheet flagged={flagged} onPick={(reason) => { if (reason) actions.flag(item.id, reason); else actions.unflag(item.id); setSheet(null); }} />
+              )}
+            </div>
+            <div className="sheet-foot"><button className="btn" onClick={() => setSheet(null)}>Close</button></div>
           </div>
         </div>
       )}
@@ -120,7 +125,8 @@ function InfoSheet({ item }: { item: ContentItem }) {
   const levelText = item.level === 'both' ? 'Higher & Ordinary' : item.level === 'HL' ? 'Higher Level' : 'Ordinary Level';
   return (
     <div className="info">
-      <h3>Where this fits</h3>
+      <h2>About this card</h2>
+      <div className="section-title">Where this fits</div>
       <ol className="path">
         <li><b>Subject</b> {ref.subject.name}</li>
         <li><b>Level</b> {levelText}</li>
@@ -128,7 +134,7 @@ function InfoSheet({ item }: { item: ContentItem }) {
         <li><b>Subtopic</b> {ref.subtopic.title}</li>
         <li><b>Objective</b> {ref.objective.text}</li>
       </ol>
-      <h3>Where it comes from</h3>
+      <div className="section-title">Where it comes from</div>
       <p><b>{PROVENANCE_LABEL[item.provenance]}.</b> {provenanceHelp(item.provenance)}</p>
       <p className={item.verification === 'verified' ? 'ok-text' : 'warn-text'}>
         {item.verification === 'verified'
@@ -156,11 +162,11 @@ function FlagSheet({ flagged, onPick }: { flagged: boolean; onPick: (reason: str
   const reasons = ['Something looks wrong', 'Not on my course', 'Confusing wording', 'Too easy / too hard'];
   return (
     <div className="info">
-      <h3>Flag this card for review</h3>
-      <p className="fine">Flagged cards are listed in your Profile so they can be checked and fixed.</p>
+      <h2>Flag this card for review</h2>
+      <p className="fine">Flagged cards are listed in Setup so they can be checked and fixed.</p>
       <div className="flag-reasons">
-        {reasons.map((r) => <button key={r} className="chip" onClick={() => onPick(r)}>{r}</button>)}
-        {flagged && <button className="chip" onClick={() => onPick(null)}>Remove flag</button>}
+        {reasons.map((r) => <button key={r} className="btn subtle" onClick={() => onPick(r)}>{r}</button>)}
+        {flagged && <button className="btn danger" onClick={() => onPick(null)}>Remove flag</button>}
       </div>
     </div>
   );

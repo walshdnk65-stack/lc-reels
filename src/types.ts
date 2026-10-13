@@ -56,7 +56,7 @@ export interface SubjectSyllabus {
   name: string;
   nativeName?: string;
   emoji: string;
-  hue: number;               // base hue for the subject's colour scheme
+  color: string;             // subject colour, from the Sixth Year tracker's palette
   specification: string;     // which spec / syllabus applies to the 2027 exam
   assessment: string;        // short description of how it is examined
   sources: string[];         // SourceRef ids

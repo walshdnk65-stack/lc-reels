@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { Grade } from '../types';
 import { CONTENT, CONTENT_BY_ID } from '../data/content';
 import { SYLLABUS } from '../data/syllabus';
 import { buildBatch, eligibleItems, type Focus, type Reason } from '../engine/feed';
 import { actions, dayKey, getState, liveStreak, useApp } from '../engine/store';
 import { CardView } from './CardView';
+import { Icon, type IconName } from './Icon';
 import type { CardMem } from './cards/shared';
 
 export type FeedFocus = Focus & { saved?: boolean; label?: string };
@@ -64,8 +65,10 @@ export function Feed({ focus, onFocus, onClearFocus, onOpenProgress }: {
 
   // Keep the selected subject chip visible in the strip.
   useEffect(() => {
-    const el = strip.current, on = el?.querySelector<HTMLElement>('.strip-chip.on');
-    if (el && on) el.scrollTo({ left: on.offsetLeft - el.clientWidth / 2 + on.offsetWidth / 2, behavior: 'smooth' });
+    const el = strip.current, on = el?.querySelector<HTMLElement>('.chip-btn.active');
+    if (!el || !on) return;
+    const a = el.getBoundingClientRect(), b = on.getBoundingClientRect();
+    el.scrollLeft += b.left - a.left - (a.width - b.width) / 2;
   }, [focus]);
 
   // Keep a few cards ready below the current one. In a small focused set, mark the
@@ -138,36 +141,43 @@ export function Feed({ focus, onFocus, onClearFocus, onOpenProgress }: {
 
   return (
     <div className="feed-wrap">
-      <div className="hud">
-        <div className="subject-strip" role="tablist" aria-label="Choose what to scroll" ref={strip}>
+      {/* On wide screens the feed gets the same title header as every other screen. */}
+      <header className="top feed-header">
+        <div className="titles">
+          <div className="title">Feed</div>
+          <div className="sub">{focus ? `${focus.label ?? 'Focus'} only` : 'Mixed from all your subjects'} · {todayCards} of {profile.dailyGoal} cards today</div>
+        </div>
+      </header>
+      <div className="feed-top">
+        <div className="chips subject-strip" role="tablist" aria-label="Choose what to scroll" ref={strip}>
           {focus && !focus.subject && (
-            <button className="strip-chip on" role="tab" aria-selected onClick={onClearFocus} aria-label={`${focus.label ?? 'Focus'}: tap to clear`}>
-              {focus.label ?? 'Focus'} <span aria-hidden>✕</span>
+            <button className="chip-btn active" role="tab" aria-selected onClick={onClearFocus} aria-label={`${focus.label ?? 'Focus'}: tap to clear`}>
+              {focus.label ?? 'Focus'} <Icon name="close" className="ic-inline" />
             </button>
           )}
-          <button className={'strip-chip' + (!focus ? ' on' : '')} role="tab" aria-selected={!focus} onClick={onClearFocus}>For you</button>
+          <button className={'chip-btn' + (!focus ? ' active' : '')} role="tab" aria-selected={!focus} onClick={onClearFocus}>For you</button>
           {profile.subjects.map(({ id }) => {
             const s = SYLLABUS[id];
             const on = focus?.subject === id && !focus.topic;
             return (
-              <button key={id} className={'strip-chip' + (on ? ' on' : '')} role="tab" aria-selected={on}
-                style={{ ['--h' as string]: s.hue }}
-                onClick={() => onFocus(on ? null : { subject: id, label: `${s.emoji} ${s.name}` })}>
-                <span aria-hidden>{s.emoji}</span> {s.name}
+              <button key={id} className={'chip-btn' + (on ? ' active' : '')} role="tab" aria-selected={on}
+                style={{ ['--c' as string]: s.color }}
+                onClick={() => onFocus(on ? null : { subject: id, label: s.name })}>
+                <i className="dot" aria-hidden /> {s.name}
               </button>
             );
           })}
         </div>
-        <button className="hud-stats" onClick={onOpenProgress} aria-label={`Streak ${streak} days. ${todayCards} of ${profile.dailyGoal} cards today`}>
-          <span className={'streak' + (todayCards > 0 ? ' lit' : '')}>🔥 {streak}</span>
+        <button className="hbtn wide" onClick={onOpenProgress} aria-label={`Streak ${streak} days. ${todayCards} of ${profile.dailyGoal} cards today`}>
+          <span className={'streak' + (todayCards > 0 ? ' lit' : '')}><Icon name="flame" /> {streak}</span>
           <span className="ring" style={{ ['--p' as string]: goalPct }}><span>{todayCards}</span></span>
         </button>
       </div>
 
       {pool.length === 0 ? (
-        <div className="empty">
+        <div className="empty-feed">
           <p>{focus?.saved ? 'No saved cards yet. Tap ☆ on any card to save it.' : 'No cards match this focus yet.'}</p>
-          {focus && <button className="primary" onClick={onClearFocus}>Back to the full feed</button>}
+          {focus && <button className="btn primary" onClick={onClearFocus}>Back to the full feed</button>}
         </div>
       ) : (
         <div className="feed" ref={scroller}>
@@ -203,52 +213,55 @@ export function Feed({ focus, onFocus, onClearFocus, onOpenProgress }: {
   }
 }
 
+function Milestone({ icon, tone, title, children, actions }: {
+  icon: IconName; tone: 'good' | 'gold' | 'accent'; title: string; children: ReactNode; actions: ReactNode;
+}) {
+  return (
+    <article className="feed-card milestone">
+      <div className="milestone-body">
+        <div className={'milestone-icon ' + tone}><Icon name={icon} /></div>
+        <h2>{title}</h2>
+        {children}
+        <div className="row center">{actions}</div>
+      </div>
+    </article>
+  );
+}
+
 function GoalCard({ onNext, onProgress }: { onNext: () => void; onProgress: () => void }) {
   const app = useApp();
   const d = app.stats.days[dayKey(Date.now())];
   const acc = d && d.graded ? Math.round((d.correct / d.graded) * 100) : null;
   return (
-    <article className="card milestone" style={{ ['--h' as string]: 45 }}>
-      <div className="milestone-body">
-        <div className="big-emoji" aria-hidden>🎉</div>
-        <h2>Daily goal done!</h2>
-        <p>{d?.cards ?? 0} cards today{acc !== null ? ` · ${acc}% correct` : ''} · 🔥 {liveStreak(app.stats)}-day streak</p>
-        <p className="fine">Short daily sessions beat long cramming sessions for remembering things. You can stop here, or keep going.</p>
-        <div className="row center">
-          <button className="primary" onClick={onNext}>Keep going ↓</button>
-          <button className="ghost" onClick={onProgress}>See progress</button>
-        </div>
-      </div>
-    </article>
+    <Milestone icon="check" tone="good" title="Daily goal done"
+      actions={<>
+        <button className="btn primary" onClick={onNext}>Keep going</button>
+        <button className="btn subtle" onClick={onProgress}>See progress</button>
+      </>}>
+      <p>{d?.cards ?? 0} cards today{acc !== null ? ` · ${acc}% correct` : ''} · {liveStreak(app.stats)}-day streak</p>
+      <p className="muted small">Short daily sessions beat long cramming sessions for remembering things. You can stop here, or keep going.</p>
+    </Milestone>
   );
 }
 
 function BreakCard({ count, onNext }: { count: number; onNext: () => void }) {
   return (
-    <article className="card milestone" style={{ ['--h' as string]: 200 }}>
-      <div className="milestone-body">
-        <div className="big-emoji" aria-hidden>🧠</div>
-        <h2>{count} cards in a row</h2>
-        <p>Nice work. A five-minute break, a glass of water or a walk helps your brain consolidate what you’ve just learned.</p>
-        <div className="row center"><button className="primary" onClick={onNext}>I’m good, keep going ↓</button></div>
-      </div>
-    </article>
+    <Milestone icon="pause" tone="gold" title={`${count} cards in a row`}
+      actions={<button className="btn primary" onClick={onNext}>I’m good, keep going</button>}>
+      <p className="muted">Nice work. A five-minute break, a glass of water or a walk helps your brain consolidate what you’ve just learned.</p>
+    </Milestone>
   );
 }
 
 function LapCard({ label, onNext, onExit }: { label: string; onNext: () => void; onExit: () => void }) {
   return (
-    <article className="card milestone" style={{ ['--h' as string]: 150 }}>
-      <div className="milestone-body">
-        <div className="big-emoji" aria-hidden>✅</div>
-        <h2>You’ve seen every card</h2>
-        <p>That’s the full set for <b>{label}</b>. Keep going to practise the ones you found hardest, or go back to your mixed feed.</p>
-        <div className="row center">
-          <button className="primary" onClick={onNext}>Practise again ↓</button>
-          <button className="ghost" onClick={onExit}>Back to mixed feed</button>
-        </div>
-      </div>
-    </article>
+    <Milestone icon="layers" tone="accent" title="You’ve seen every card"
+      actions={<>
+        <button className="btn primary" onClick={onNext}>Practise again</button>
+        <button className="btn subtle" onClick={onExit}>Back to mixed feed</button>
+      </>}>
+      <p className="muted">That’s the full set for <b>{label}</b>. Keep going to practise the ones you found hardest, or go back to your mixed feed.</p>
+    </Milestone>
   );
 }
 
@@ -256,8 +269,8 @@ export function focusLabel(f: Focus): string {
   if (f.topic) {
     const subj = SYLLABUS[f.topic.split('.')[0] as keyof typeof SYLLABUS];
     const t = subj.topics.find((t) => t.id === f.topic);
-    return `${subj.emoji} ${t?.title ?? subj.name}`;
+    return t?.title ?? subj.name;
   }
-  if (f.subject) return `${SYLLABUS[f.subject].emoji} ${SYLLABUS[f.subject].name}`;
+  if (f.subject) return SYLLABUS[f.subject].name;
   return 'Focus';
 }

@@ -30,7 +30,7 @@ function topic(subject: SubjectId, id: string, title: string, level: LevelTag, s
 
 /* ------------------------------------------------------------------ Maths */
 const maths: SubjectSyllabus = {
-  id: 'maths', name: 'Mathematics', emoji: '📐', hue: 220,
+  id: 'maths', name: 'Mathematics', emoji: '📐', color: '#3e5c97',
   specification: 'Leaving Certificate Mathematics syllabus — five strands (Project Maths)',
   assessment: 'Two written papers. Paper 1: Number, Algebra, Functions & Calculus. Paper 2: Statistics & Probability, Geometry & Trigonometry.',
   sources: ['ncca-maths', 'sec-papers'], verification: 'needs-review',
@@ -142,7 +142,7 @@ const maths: SubjectSyllabus = {
 
 /* -------------------------------------------------------------- Chemistry */
 const chemistry: SubjectSyllabus = {
-  id: 'chemistry', name: 'Chemistry', emoji: '⚗️', hue: 165,
+  id: 'chemistry', name: 'Chemistry', emoji: '⚗️', color: '#8a5a9e',
   specification: 'Leaving Certificate Chemistry specification (2025) — first examined in 2027',
   assessment: 'Written examination (60%) and the externally assessed Chemistry in Practice Investigation (40%).',
   sources: ['ncca-chemistry-2025'], verification: 'needs-review',
@@ -235,7 +235,7 @@ const chemistry: SubjectSyllabus = {
 
 /* --------------------------------------------------------------- Business */
 const business: SubjectSyllabus = {
-  id: 'business', name: 'Business', emoji: '💼', hue: 30,
+  id: 'business', name: 'Business', emoji: '💼', color: '#c2663b',
   specification: 'Leaving Certificate Business specification (2025) — first examined in 2027',
   assessment: 'Written examination (60%) and the Business Alive Investigative Study (40%).',
   sources: ['ncca-business-2025'], verification: 'needs-review',
@@ -331,7 +331,7 @@ const business: SubjectSyllabus = {
 
 /* ------------------------------------------------------------- Accounting */
 const accounting: SubjectSyllabus = {
-  id: 'accounting', name: 'Accounting', emoji: '📊', hue: 140,
+  id: 'accounting', name: 'Accounting', emoji: '📊', color: '#5e8c5a',
   specification: 'Leaving Certificate Accounting syllabus — financial and management accounting',
   assessment: 'One written paper in three sections: financial accounting (Sections 1 and 2) and management accounting (Section 3).',
   sources: ['ncca-accounting', 'sec-papers'], verification: 'needs-review',
@@ -406,7 +406,7 @@ const accounting: SubjectSyllabus = {
 
 /* ---------------------------------------------------------------- English */
 const english: SubjectSyllabus = {
-  id: 'english', name: 'English', emoji: '📖', hue: 330,
+  id: 'english', name: 'English', emoji: '📖', color: '#b3567a',
   specification: 'Leaving Certificate English syllabus; prescribed material for 2027 set by circular 0021/2025',
   assessment: 'Paper 1 (Comprehending and Composing) and Paper 2 (Single text, Comparative study, Poetry).',
   sources: ['ncca-english', 'doe-0021-2025', 'sec-papers'], verification: 'needs-review',
@@ -470,7 +470,7 @@ const english: SubjectSyllabus = {
 
 /* ------------------------------------------------------------------ Irish */
 const irish: SubjectSyllabus = {
-  id: 'irish', name: 'Irish', nativeName: 'Gaeilge', emoji: '☘️', hue: 120,
+  id: 'irish', name: 'Irish', nativeName: 'Gaeilge', emoji: '☘️', color: '#2f8f8f',
   specification: 'Siollabas Gaeilge na hArdteistiméireachta; prescribed material for 2027 set by circular 0041/2026',
   assessment: 'Béaltriail (40%), Páipéar 1 (Cluastuiscint & Ceapadóireacht) and Páipéar 2 (Léamhthuiscint & Litríocht).',
   sources: ['ncca-irish', 'doe-0041-2026', 'sec-s90-10', 'sec-s76-25'], verification: 'needs-review',
@@ -560,7 +560,7 @@ const irish: SubjectSyllabus = {
 
 /* ----------------------------------------------------------------- French */
 const french: SubjectSyllabus = {
-  id: 'french', name: 'French', nativeName: 'Français', emoji: '🇫🇷', hue: 265,
+  id: 'french', name: 'French', nativeName: 'Français', emoji: '🇫🇷', color: '#5b6bb5',
   specification: 'Leaving Certificate French syllabus',
   assessment: 'Oral examination, aural (listening) examination and written paper (reading comprehension and written production).',
   sources: ['ncca-french', 'sec-papers'], verification: 'needs-review',

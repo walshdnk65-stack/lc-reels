@@ -43,18 +43,21 @@ export function Progress({ onStudy }: { onStudy: (f: FeedFocus | null) => void }
   const seenCount = pool.filter((i) => app.items[i.id]?.seen).length;
 
   return (
-    <div className="screen">
-      <h1 className="screen-title">Progress</h1>
+    <div className="stack">
+      <section className="card">
+        <div className="stats">
+          <div className="stat"><b>{streak}</b><span>day streak<br />best {app.stats.bestStreak}</span></div>
+          <div className="stat"><b>{today?.cards ?? 0}<small>/{app.profile.dailyGoal}</small></b><span>cards today</span></div>
+          <div className="stat"><b>{today?.graded ? Math.round((today.correct / today.graded) * 100) + '%' : '–'}</b><span>correct today</span></div>
+        </div>
+        <div className="level-row">
+          <span className="small"><b>Level {level}</b> <span className="muted">· {app.stats.xp} XP</span></span>
+          <Meter value={levelPct} color="var(--gold)" />
+        </div>
+      </section>
 
-      <div className="stat-grid">
-        <div className="stat"><span className="stat-n">🔥 {streak}</span><span className="stat-l">day streak · best {app.stats.bestStreak}</span></div>
-        <div className="stat"><span className="stat-n">{today?.cards ?? 0}<small>/{app.profile.dailyGoal}</small></span><span className="stat-l">cards today</span></div>
-        <div className="stat"><span className="stat-n">{today?.graded ? Math.round((today.correct / today.graded) * 100) : '–'}<small>%</small></span><span className="stat-l">correct today</span></div>
-        <div className="stat"><span className="stat-n">Lv {level}</span><span className="stat-l">{app.stats.xp} XP</span><Meter value={levelPct} /></div>
-      </div>
-
-      <section className="panel">
-        <h2>This week</h2>
+      <section className="card">
+        <div className="card-head"><h2>This week</h2><span className="side">goal {app.profile.dailyGoal} a day</span></div>
         <div className="week">
           {week.map((w, i) => (
             <div key={i} className="week-col">
@@ -68,39 +71,42 @@ export function Progress({ onStudy }: { onStudy: (f: FeedFocus | null) => void }
         </div>
       </section>
 
-      <section className="panel">
-        <h2>Ready to review</h2>
-        <p>{due ? <><b>{due}</b> cards are due for spaced-repetition review. They’ll appear first in your feed.</> : 'Nothing due right now. New cards are waiting in your feed.'}</p>
-        <p className="fine">You’ve seen {seenCount} of {pool.length} cards for your subjects.</p>
+      <section className="card">
+        <div className="card-head"><h2>Ready to review</h2>{due > 0 && <span className="pill soon">{due} due</span>}</div>
+        <p className="small">{due ? 'These cards are due for spaced-repetition review. They’ll appear first in your feed.' : 'Nothing due right now. New cards are waiting in your feed.'}</p>
+        <p className="track-label">You’ve seen {seenCount} of {pool.length} cards for your subjects.</p>
       </section>
 
       {weak.length > 0 && (
-        <section className="panel">
-          <h2>Weak spots</h2>
+        <section className="card">
+          <div className="card-head"><h2>Weak spots</h2><span className="side">under 75% right</span></div>
           {weak.map((w) => (
-            <div key={w.id} className="weak-row">
-              <span className="grow">{w.label} <small className="fine">· {Math.round(w.acc * 100)}% right</small><Meter value={w.m} /></span>
-              <button className="ghost small" onClick={() => onStudy({ topic: w.id, label: w.label })}>Revise</button>
+            <div key={w.id} className="item">
+              <div className="body">
+                <div className="t">{w.label}</div>
+                <div className="meta"><span className="pill late">{Math.round(w.acc * 100)}% right</span></div>
+              </div>
+              <button className="link" onClick={() => onStudy({ topic: w.id, label: w.label })}>Revise</button>
             </div>
           ))}
         </section>
       )}
 
-      <section className="panel">
-        <h2>By subject</h2>
+      <section className="card">
+        <div className="card-head"><h2>By subject</h2><span className="side">mastery</span></div>
         {app.profile.subjects.map(({ id }) => {
           const s = SYLLABUS[id];
           const items = pool.filter((i) => i.objective.startsWith(id + '.'));
           const m = mastery(items, app.items, now);
           return (
-            <button key={id} className="subj-progress" onClick={() => onStudy({ subject: id, label: focusLabel({ subject: id }) })}>
-              <span>{s.emoji} {s.name}</span>
-              <Meter value={m} />
-              <small>{Math.round(m * 100)}%</small>
+            <button key={id} className="subject-row" onClick={() => onStudy({ subject: id, label: focusLabel({ subject: id }) })}>
+              <span className="nm"><i className="swatch" style={{ background: s.color }} />{s.name}</span>
+              <span className="track-wrap"><Meter value={m} color={s.color} /></span>
+              <span className="val">{Math.round(m * 100)}%</span>
             </button>
           );
         })}
-        <p className="fine">Mastery grows as you answer cards correctly over increasing gaps of time, and fades if you leave a topic too long.</p>
+        <p className="track-label">Mastery grows as you answer cards correctly over increasing gaps of time, and fades if you leave a topic too long.</p>
       </section>
     </div>
   );
