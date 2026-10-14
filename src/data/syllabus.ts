@@ -428,6 +428,7 @@ const english: SubjectSyllabus = {
         ['personal', 'Plan a personal essay'],
         ['speech', 'Write a persuasive speech or article'],
         ['story', 'Shape a short story'],
+        ['mechanics', 'Write accurately: punctuation, spelling and grammar'],
       ]],
     ], { paper: 'Paper 1' }),
     topic('english', 'single', 'Single text (2027)', 'both', [
@@ -437,6 +438,7 @@ const english: SubjectSyllabus = {
         ['gatsby', 'Analyse character, theme and key moments in The Great Gatsby'],
         ['dracula', 'Analyse character, theme and key moments in Dracula'],
         ['hamnet', 'Analyse character, theme and key moments in Hamnet'],
+        ['girl', 'Analyse character, theme and key moments in Girl on an Altar'],
       ]],
     ], { paper: 'Paper 2', verification: 'verified' }),
     topic('english', 'comparative', 'Comparative study (2027)', 'both', [

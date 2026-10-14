@@ -44,15 +44,51 @@ export function Feed({ focus, onFocus, onClearFocus, onOpenProgress }: {
   const strip = useRef<HTMLDivElement>(null);
   const sessionCount = useRef(0);
   const goalShown = useRef(false);
+  // Refresh: a fresh feed of cards never answered and not shown recently or this session.
+  const [fresh, setFresh] = useState(false);
+  const [generation, setGeneration] = useState(0);
+  const shownThisSession = useRef(new Set<string>());
+  const [toast, setToast] = useState<string | null>(null);
+
+  const unseenPool = useCallback((exclude: Iterable<string> = []) => {
+    const st = getState();
+    const skip = new Set([...st.recent, ...shownThisSession.current, ...exclude]);
+    return pool.filter((i) => !st.items[i.id]?.seen && !skip.has(i.id));
+  }, [pool]);
 
   const makeBatch = useCallback((existing: Entry[], n: number): Entry[] => {
     const st = getState();
     const shown = existing.flatMap((e) => (e.kind === 'item' ? [e.itemId] : []));
-    return buildBatch({ pool, states: st.items, now: Date.now(), recent: [...st.recent, ...shown] }, n)
+    // In fresh mode draw only unseen cards; once they run out, carry on with the usual mix.
+    const unseen = fresh ? unseenPool(shown) : [];
+    const source = unseen.length ? unseen : pool;
+    return buildBatch({ pool: source, states: st.items, now: Date.now(), recent: [...st.recent, ...shown] }, n)
       .map((p) => ({ key: nextKey(), kind: 'item' as const, ...p }));
-  }, [pool]);
+  }, [pool, fresh, unseenPool]);
 
-  // New pool (focus or subjects changed) → new feed.
+  const refresh = () => {
+    entries.forEach((e) => { if (e.kind === 'item') shownThisSession.current.add(e.itemId); });
+    const count = unseenPool().length;
+    if (!count) {
+      setToast('You’ve seen every card here. Showing your usual mix.');
+      setFresh(false);
+    } else {
+      setToast(`${count} card${count === 1 ? '' : 's'} you haven’t seen yet`);
+      setFresh(true);
+    }
+    setGeneration((g) => g + 1);
+  };
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 2600);
+    return () => clearTimeout(t);
+  }, [toast]);
+
+  // A new subject or focus starts in the normal mix again.
+  useEffect(() => { setFresh(false); }, [pool]);
+
+  // New pool, focus, subjects or a refresh → new feed.
   useEffect(() => {
     const st = getState();
     goalShown.current = (st.stats.days[dayKey(Date.now())]?.cards ?? 0) >= st.profile.dailyGoal;
@@ -61,7 +97,7 @@ export function Feed({ focus, onFocus, onClearFocus, onOpenProgress }: {
     setEntries(makeBatch([], 8));
     setActive(0);
     scroller.current?.scrollTo({ top: 0 });
-  }, [makeBatch]);
+  }, [makeBatch, generation]);
 
   // Keep the selected subject chip visible in the strip.
   useEffect(() => {
@@ -168,11 +204,16 @@ export function Feed({ focus, onFocus, onClearFocus, onOpenProgress }: {
             );
           })}
         </div>
+        <button className="hbtn refresh" onClick={refresh} aria-label="Refresh: show cards you haven’t seen yet" title="Cards you haven’t seen yet">
+          <Icon name="refresh" />
+        </button>
         <button className="hbtn wide" onClick={onOpenProgress} aria-label={`Streak ${streak} days. ${todayCards} of ${profile.dailyGoal} cards today`}>
           <span className={'streak' + (todayCards > 0 ? ' lit' : '')}><Icon name="flame" /> {streak}</span>
           <span className="ring" style={{ ['--p' as string]: goalPct }}><span>{todayCards}</span></span>
         </button>
       </div>
+
+      {toast && <div className="toast" role="status">{toast}</div>}
 
       {pool.length === 0 ? (
         <div className="empty-feed">

@@ -4,6 +4,7 @@ import { lookupObjective } from '../data/syllabus';
 import { SOURCES } from '../data/sources';
 import { actions } from '../engine/store';
 import { Icon } from './Icon';
+import { MathContext } from './Rich';
 import type { Reason } from '../engine/feed';
 import { BuilderCard, ClozeCard, MCQCard, TranslateCard } from './cards/Quiz';
 import { EssayCard, ExplainerCard, FlashcardCard, ShortCard, TechniqueCard, WorkedCard } from './cards/Recall';
@@ -86,7 +87,9 @@ export function CardView({ item, reason, mem, graded, bookmarked, flagged, onGra
       </header>
 
       <div className="card-scroll">
-        <Body item={item} mem={mem} graded={graded} onGrade={grade} onRead={read} />
+        <MathContext.Provider value={ref.subject.id === 'maths'}>
+          <Body item={item} mem={mem} graded={graded} onGrade={grade} onRead={read} />
+        </MathContext.Provider>
       </div>
 
       <footer className="fc-foot">
